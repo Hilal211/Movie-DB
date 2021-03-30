@@ -70,4 +70,14 @@ app.get('/movies/read/by-title', function (req, res) {
   movies.sort((a, b) => (a.title > b.title) ? 1 : -1)
   res.status(200).send(movies)
 })
+
+app.get('/movies/read/id/:id', function (req, res) {
+  if(req.params.id>0 && req.params.id<=movies.length){
+    res.status(200).send(movies[req.params.id-1])
+  }
+  else{
+    res.status(404).send('the movie '+req.params.id+' does not exist')
+  }
+  
+})
   
