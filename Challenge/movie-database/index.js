@@ -1,9 +1,9 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const hours=new Date().getHours();
-const minutes=new Date().getMinutes();
-const TIME=hours+":"+minutes;
+const hours = new Date().getHours();
+const minutes = new Date().getMinutes();
+const TIME = hours + ":" + minutes;
 const movies = [
   { title: 'Jaws', year: 1975, rating: 8 },
   { title: 'Avatar', year: 2009, rating: 7.8 },
@@ -20,24 +20,24 @@ app.listen(port, () => {
 })
 
 app.get('/test', function (req, res) {
-    res.status(200).send("ok")
-  })
+  res.status(200).send("ok")
+})
 
-  app.get('/time', function (req, res) {
-    res.status(200).send(TIME)
-  })
+app.get('/time', function (req, res) {
+  res.status(200).send(TIME)
+})
 
-  app.get('/Hello', function (req, res) {
-    res.status(200).send("Hello")
-  })
+app.get('/Hello', function (req, res) {
+  res.status(200).send("Hello")
+})
 
-  app.get('/Hello/:id', function (req, res) {
-    res.status(200).send("Hello " + req.params.id)
-  })
+app.get('/Hello/:id', function (req, res) {
+  res.status(200).send("Hello " + req.params.id)
+})
 
-  app.get('/search?s=:search', function (req, res) {
-    if(req.query.s == "" || req.query.s == undefined){res.status(500).send('You have to enter a search')}
-    else{res.status(200).send("OK! You searched for:" + req.query.s)}
+app.get('/search?s=:search', function (req, res) {
+  if (req.query.s == "" || req.query.s == undefined) { res.status(500).send('You have to enter a search') }
+  else { res.status(200).send("OK! You searched for:" + req.query.s) }
 })
 
 app.get('/movies/create', (req, res) => {
@@ -72,12 +72,32 @@ app.get('/movies/read/by-title', function (req, res) {
 })
 
 app.get('/movies/read/id/:id', function (req, res) {
-  if(req.params.id>0 && req.params.id<=movies.length){
-    res.status(200).send(movies[req.params.id-1])
+  if (req.params.id > 0 && req.params.id <= movies.length) {
+    res.status(200).send(movies[req.params.id - 1])
   }
-  else{
-    res.status(404).send('the movie '+req.params.id+' does not exist')
+  else {
+    res.status(404).send('the movie ' + req.params.id + ' does not exist')
   }
-  
+
 })
-  
+
+app.get('/movies/add', function (req, res) {
+  const title = req.query.title;
+  const year = parseInt(req.query.year);
+  const rating = parseInt(req.query.rating);
+  var movie={};
+  if (title === null || year === null || year.toString().length != 4 || typeof(parseInt(year)) !== 'number') {
+    res.status(404).send('you cannot create a movie without providing a title and a year');
+  } else {
+    if(rating===null){
+    movie = { title: title, year: year, rating: 4 }
+    }
+    else{
+      movie = { title: title, year: year, rating: rating }
+    }
+    
+  }
+  movies.push(movie);
+    res.status(200).send(movies)
+
+})
