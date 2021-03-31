@@ -85,31 +85,54 @@ app.get('/movies/add', function (req, res) {
   const title = req.query.title;
   const year = parseInt(req.query.year);
   const rating = parseInt(req.query.rating);
-  var movie={};
-  if (title === null || year === null || year.toString().length != 4 || typeof(parseInt(year)) !== 'number') {
+  var movie = {};
+  if (title === null || year === null || year.toString().length != 4 || typeof (parseInt(year)) !== 'number') {
     res.status(404).send('you cannot create a movie without providing a title and a year');
   } else {
-    if(rating===null){
-    movie = { title: title, year: year, rating: 4 }
+    if (rating === null) {
+      movie = { title: title, year: year, rating: 4 }
     }
-    else{
+    else {
       movie = { title: title, year: year, rating: rating }
     }
-    
+
   }
   movies.push(movie);
-    res.status(200).send(movies)
+  res.status(200).send(movies)
 
 })
 
-app.get('/movies/delete/:id',function(req,res){
-  const id=parseInt(req.params.id);
-  if(id<1 || id>movies.length){
-    res.status(404).send('the movie '+id+' does not exist');
+app.get('/movies/delete/:id', function (req, res) {
+  const id = parseInt(req.params.id);
+  if (id < 1 || id > movies.length) {
+    res.status(404).send('the movie ' + id + ' does not exist');
   }
-  else{
-    movies.splice(id-1,1);
+  else {
+    movies.splice(id - 1, 1);
     res.send(movies)
   }
-  
+
+})
+
+app.get('/movies/update/:id', function (req, res) {
+  const id = parseInt(req.params.id);
+  if (id < 1 || id > movies.length) {
+    res.status(404).send('the movie ' + id + ' does not exist');
+  }
+  else {
+    const movie = movies[id - 1]
+    const arrObj = Object.values(movie);
+  }
+  const title = req.query.title;
+  const year = parseInt(req.query.year);
+  const rating = parseInt(req.query.rating);
+  if ((title == "" || title == undefined) && (year == "" || year == undefined) && (rating == "" || rating == undefined)) {
+    res.send('you are not updated anythings')
+  }
+  else {
+    (title == "" || title == undefined) ? movies[id - 1].title = arrObj[0] : movies[id - 1].title = title;
+    (year == "" || year == undefined) ? movies[id - 1].year = arrObj[1] : movies[id - 1].year = year;
+    (rating == "" || rating == undefined) ? movies[id - 1].rating = arrObj[2] : movies[id - 1].rating = rating;
+  }
+  res.send(movies);
 })
