@@ -101,3 +101,15 @@ app.get('/movies/add', function (req, res) {
     res.status(200).send(movies)
 
 })
+
+app.get('/movies/delete/:id',function(req,res){
+  const id=parseInt(req.params.id);
+  if(id<1 || id>movies.length){
+    res.status(404).send('the movie '+id+' does not exist');
+  }
+  else{
+    movies.splice(id-1,1);
+    res.send(movies)
+  }
+  
+})
