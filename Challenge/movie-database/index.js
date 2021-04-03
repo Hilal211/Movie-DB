@@ -4,6 +4,21 @@ const port = 3000
 const hours = new Date().getHours();
 const minutes = new Date().getMinutes();
 const TIME = hours + ":" + minutes;
+const MongoClient = require('mongodb').MongoClient;
+const bodyParser = require('body-parser');
+const db = require('./db');
+app.use(bodyParser.urlencoded({ extended: true }));
+MongoClient.connect(db, { useUnifiedTopology: true })
+
+// MongoClient.connect(db.url, (err, database) => {
+//   if (err) return console.log(err)
+//   require('./index')(app, database);
+
+//   app.listen(port, () => {
+//     console.log('We are live on ' + port);
+//   });               
+// }) 
+
 const movies = [
   { title: 'Jaws', year: 1975, rating: 8 },
   { title: 'Avatar', year: 2009, rating: 7.8 },
